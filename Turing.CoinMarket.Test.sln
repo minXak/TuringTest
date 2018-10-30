@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Turing.CoinMarket.Test.UI", "Turing.CoinMarket.Test\Turing.CoinMarket.Test.UI.csproj", "{DFA5559F-35D4-4E24-95AC-37A55AB6E4E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Turing.CoinMarket.Repositories", "Turing.CoinMarket.Repositories\Turing.CoinMarket.Repositories.csproj", "{838732DE-C3CB-41A4-B527-EB1B9F496237}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Turing.CoinMarket.DataModels", "Turing.CoinMarket.DataModels\Turing.CoinMarket.DataModels.csproj", "{F4980193-977D-426D-96C0-CBC1B7F450F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFA5559F-35D4-4E24-95AC-37A55AB6E4E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFA5559F-35D4-4E24-95AC-37A55AB6E4E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFA5559F-35D4-4E24-95AC-37A55AB6E4E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFA5559F-35D4-4E24-95AC-37A55AB6E4E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{838732DE-C3CB-41A4-B527-EB1B9F496237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{838732DE-C3CB-41A4-B527-EB1B9F496237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{838732DE-C3CB-41A4-B527-EB1B9F496237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{838732DE-C3CB-41A4-B527-EB1B9F496237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4980193-977D-426D-96C0-CBC1B7F450F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4980193-977D-426D-96C0-CBC1B7F450F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4980193-977D-426D-96C0-CBC1B7F450F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4980193-977D-426D-96C0-CBC1B7F450F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9758F6B1-B332-4C96-A68E-0C6075B5D2F6}
+	EndGlobalSection
+EndGlobal
