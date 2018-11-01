@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Turing.CoinMarket.Test"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
@@ -68,9 +69,14 @@
                 </MenuItem>
                 <MenuItem Header="_Global" Template="{StaticResource VsMenuTop}" >
                 </MenuItem>
-                <MenuItem Header="_Refresh" Template="{StaticResource VsMenuTop}" Margin="400 0 0 0" Click="Refresh_Click" />
+                <fa:ImageAwesome Icon="Check"  SpinDuration="4" Height="15" Width="15" Margin="350 0 0 0" Foreground="White" Name="LoadingSpinner"/>
+                <MenuItem Header="_Refresh" Template="{StaticResource VsMenuTop}"  Click="Refresh_Click" Width="68" />
                 <Separator Template="{StaticResource VsMenuSep}" Margin="0" />
-                <ComboBox Width="120" x:Name="CbxCurrency" SelectionChanged="CbxCurrency_OnSelectionChanged"/>
+                <ComboBox Width="120" x:Name="CbxCurrency" SelectionChanged="CbxCurrency_OnSelectionChanged">
+                    <ComboBoxItem IsSelected="True">USD</ComboBoxItem>
+                    <ComboBoxItem>EUR</ComboBoxItem>
+                    <ComboBoxItem>BTC</ComboBoxItem>
+                </ComboBox>
             </Menu>
 
         </StackPanel>
@@ -85,7 +91,7 @@
                 </Menu>-->
             </StackPanel>
             <Grid VerticalAlignment="Stretch">
-                <DataGrid x:Name="cryptoCurrencyGrid" Grid.ColumnSpan="2" Margin="0,0,-0.4,0.2"/>
+                <DataGrid x:Name="CryptoCurrencyGrid" Grid.ColumnSpan="2" Margin="0,0,-0.4,0.2" IsReadOnly="True"/>
             </Grid>
         </StackPanel>
 
