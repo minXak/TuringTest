@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="RequesetFactory.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -69,6 +70,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -93,6 +95,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Turing.CoinMarket.DataModels\Turing.CoinMarket.DataModels.csproj">
+      <Project>{F4980193-977D-426D-96C0-CBC1B7F450F3}</Project>
+      <Name>Turing.CoinMarket.DataModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Turing.CoinMarket.Repositories\Turing.CoinMarket.Repositories.csproj">
+      <Project>{838732DE-C3CB-41A4-B527-EB1B9F496237}</Project>
+      <Name>Turing.CoinMarket.Repositories</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

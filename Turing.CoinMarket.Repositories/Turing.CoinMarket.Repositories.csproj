@@ -44,8 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiConnecter.cs" />
     <Compile Include="CoinMarketCapQuery.cs" />
     <Compile Include="CoinMarketModels\TickerModel.cs" />
+    <Compile Include="CoinMarketRequest.cs" />
+    <Compile Include="PageableRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

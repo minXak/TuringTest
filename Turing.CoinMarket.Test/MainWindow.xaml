@@ -34,30 +34,6 @@
             </StackPanel>
         </ControlTemplate>
 
-        <!-- style a non-top level menu item -->
-        <ControlTemplate x:Key="VsMenuSub" TargetType="MenuItem">
-            <DockPanel TextBlock.FontSize="15px" x:Name="panel">
-                <!-- label, icons, etc. -->
-                <Image Source="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" Width="20" Margin="5,0" />
-                <Label Content="{TemplateBinding Header}" Foreground="Black" Margin="0,5,5,5" />
-
-                <!-- draw the right arrow only if this menu item has sub items -->
-                <Image Source="icon_right.png" Visibility="{Binding HasItems, Converter={StaticResource btv}, RelativeSource={RelativeSource TemplatedParent}}" />
-
-                <!-- sub items -->
-                <Popup IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" Placement="Right" >
-                    <Border BorderThickness="1" Background="White" BorderBrush="#E0E0E0">
-                        <StackPanel IsItemsHost="True" />
-                    </Border>
-                </Popup>
-            </DockPanel>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsHighlighted" Value="True">
-                    <Setter Property="Background" TargetName="panel" Value="#EFF6FC" />
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-
         <!-- style the separator -->
         <ControlTemplate x:Key="VsMenuSep" TargetType="Separator">
             <Border Height="1" Background="#E0E0E0" />
@@ -92,11 +68,26 @@
                 </MenuItem>
                 <MenuItem Header="_Global" Template="{StaticResource VsMenuTop}" >
                 </MenuItem>
-                <MenuItem Header="_Refresh" Template="{StaticResource VsMenuTop}" Margin="0" />
+                <MenuItem Header="_Refresh" Template="{StaticResource VsMenuTop}" Margin="400 0 0 0" Click="Refresh_Click" />
+                <Separator Template="{StaticResource VsMenuSep}" Margin="0" />
+                <ComboBox Width="120" x:Name="CbxCurrency" SelectionChanged="CbxCurrency_OnSelectionChanged"/>
             </Menu>
+
         </StackPanel>
-        <DockPanel VerticalAlignment="Stretch">
-            <DataGrid Height="375"/>
-        </DockPanel>
+        <StackPanel>
+            <StackPanel Orientation = "Horizontal" HorizontalAlignment="Center">
+                <Button Content="&lt;&lt; Prevoius Page" Width="100" IsEnabled="False" Click="Prevoius_Click" x:Name="PreviousPage"/>
+                <Button Content="Next Page &gt;&gt;" Width="100" Margin="20,0,0,0" Click="Next_Click" x:Name="NextPage" />
+
+                <!--<Menu IsMainMenu="True">
+                    <MenuItem Header="_Previous Page" Template="{StaticResource VsMenuTop}" Margin="300 0 0 0" IsEnabled="False" Click="Prevoius_Click" x:Name="PreviousPage" />
+                    <MenuItem Header="_Next Page" Template="{StaticResource VsMenuTop}" Margin="0" Click="Next_Click" x:Name="NextPage" />
+                </Menu>-->
+            </StackPanel>
+            <Grid VerticalAlignment="Stretch">
+                <DataGrid x:Name="cryptoCurrencyGrid" Grid.ColumnSpan="2" Margin="0,0,-0.4,0.2"/>
+            </Grid>
+        </StackPanel>
+
     </StackPanel>
 </Window>

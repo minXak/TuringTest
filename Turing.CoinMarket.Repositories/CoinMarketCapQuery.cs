@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Turing.CoinMarket.DataModels;
@@ -10,11 +8,8 @@ using Turing.CoinMarket.Repositories.CoinMarketModels;
 
 namespace Turing.CoinMarket.Repositories
 {
-    public class CoinMarketCapQuery : ICoinMarketCapRepository
+    public class CoinMarketCapQuery : ICoinMarketCapRepository, IPagableRepository<CoinMarketRequest>
     {
-        private const string TickerUrl = "/v2/ticker/?sort=id&structure=array&convert={0}&start={1}&limit={2}";
-        private const string CoinMarketBase = "https://api.coinmarketcap.com";
-
         public async Task<List<CryptoCurrencyModel>> GetAll()
         {
             var request = new CoinMarketRequest();
@@ -24,8 +19,8 @@ namespace Turing.CoinMarket.Repositories
         public async Task<List<CryptoCurrencyModel>> GetAll(CoinMarketRequest request)
         {
             var urlParams = PrepareQuery(request);
-            var result = await GetApiResult(urlParams);
 
+            var result = await ApiConnecter.GetApiResult(urlParams);
             var parsedResult = ParseResult(result);
             var mappedResult = MapResult(parsedResult, request.Currency);
             return mappedResult;
@@ -33,21 +28,7 @@ namespace Turing.CoinMarket.Repositories
 
         private string PrepareQuery(CoinMarketRequest request)
         {
-            return string.Format(TickerUrl, request.Currency, request.Start, request.Limit);
-        }
-
-        private static async Task<string> GetApiResult(string urlParams)
-        {
-            using (var client = new HttpClient(new HttpClientHandler
-            {
-                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-            }))
-            {
-                client.BaseAddress = new Uri(CoinMarketBase);
-                HttpResponseMessage response = await client.GetAsync(urlParams);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
-            }
+            return string.Format(ApiConnecter.TickerUrl, request.Currency, request.Start, request.Limit);
         }
 
         private List<CryptoCurrencyModel> MapResult(TickerModel parsedResult, string currency)
@@ -55,14 +36,13 @@ namespace Turing.CoinMarket.Repositories
             var mappedResult = new List<CryptoCurrencyModel>();
             foreach (var tickerModelItem in parsedResult.data)
             {
-
                 if (!tickerModelItem.quotes.ContainsKey(currency))
                 {
                     continue;
                 }
 
                 var quote = tickerModelItem.quotes.FirstOrDefault(s => s.Key == currency);
-                
+
                 mappedResult.Add(new CryptoCurrencyModel
                 {
                     MarketCap = quote.Value.market_cap.GetValueOrDefault(0),
@@ -85,23 +65,13 @@ namespace Turing.CoinMarket.Repositories
         }
     }
 
+    public interface IPagableRepository<in T> where T : PageableRequest
+    {
+        Task<List<CryptoCurrencyModel>> GetAll(T request);
+    }
+
     public interface ICoinMarketCapRepository
     {
         Task<List<CryptoCurrencyModel>> GetAll();
-        Task<List<CryptoCurrencyModel>> GetAll(CoinMarketRequest request);
-    }
-
-    public class CoinMarketRequest
-    {
-        public CoinMarketRequest()
-        {
-            Currency = "USD";
-            Limit = 100;
-            Start = 0;
-        }
-
-        public string Currency { get; set; }
-        public int Limit { get; set; }
-        public int Start { get; set; }
     }
 }
