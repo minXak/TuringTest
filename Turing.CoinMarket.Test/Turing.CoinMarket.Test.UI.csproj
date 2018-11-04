@@ -62,7 +62,7 @@
     <Compile Include="GlobalTab.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RequesetFactory.cs" />
-    <Compile Include="ViewModel.cs" />
+    <Compile Include="MainViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
