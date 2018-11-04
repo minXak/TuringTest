@@ -1,8 +1,8 @@
 ﻿namespace Turing.CoinMarket.Repositories
 {
-    public class GlobalRequest
+    public class CoinMarketRequest : PageableRequest
     {
-        public GlobalRequest()
+        public CoinMarketRequest()
         {
             Currency = "USD";
         }

@@ -13,5 +13,13 @@ namespace Turing.CoinMarket.Test.UI
                 Currency = currency
             };
         }
+
+        public static GlobalRequest NewGlobal( string currency)
+        {
+            return new GlobalRequest
+            {
+                Currency = currency
+            };
+        }
     }
 }

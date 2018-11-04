@@ -5,14 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Turing.CoinMarket.Test"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:converters="clr-namespace:Turing.CoinMarket.Test.UI.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />
 
+
         <!-- style a top level menu item -->
-        <ControlTemplate x:Key="VsMenuTop" TargetType="MenuItem">
+        <ControlTemplate x:Key="MenuTop" TargetType="MenuItem">
             <StackPanel TextBlock.FontSize="15px" Height="40">
                 <!-- label, icons, etc. -->
                 <Label Content="{TemplateBinding Header}" Margin="5" Foreground="White" />
@@ -36,12 +38,12 @@
         </ControlTemplate>
 
         <!-- style the separator -->
-        <ControlTemplate x:Key="VsMenuSep" TargetType="Separator">
+        <ControlTemplate x:Key="MenuSep" TargetType="Separator">
             <Border Height="1" Background="#E0E0E0" />
         </ControlTemplate>
 
         <!-- style the VSOnline -->
-        <ControlTemplate x:Key="VsOnline" TargetType="MenuItem">
+        <ControlTemplate x:Key="MenuTopSelected" TargetType="MenuItem">
             <StackPanel TextBlock.FontSize="15px" Height="40" Orientation="Horizontal" Background="#005A9E">
                 <Label Content="{TemplateBinding Header}" Margin="5" Foreground="White" />
 
@@ -59,40 +61,57 @@
             <Setter Property="Background" Value="#0078D7" />
             <Setter Property="Height" Value="40px" />
         </Style>
-
+        <converters:CellConverter x:Key="CellConverter"/>
     </Window.Resources>
     <StackPanel>
         <!-- the real app and real menu -->
         <StackPanel>
             <Menu IsMainMenu="True">
-                <MenuItem Header="_Coin Market" Template="{StaticResource VsOnline}" >
+                <MenuItem Header="_Coin Market" Template="{StaticResource MenuTopSelected}" Click="CoinMarket_Click" Name="CoinMarketMenuItem" >
                 </MenuItem>
-                <MenuItem Header="_Global" Template="{StaticResource VsMenuTop}" >
+                <MenuItem Header="_Global" Template="{StaticResource MenuTop}" Click="Global_Click" Name="GlobalMenuItem" >
                 </MenuItem>
                 <fa:ImageAwesome Icon="Check"  SpinDuration="4" Height="15" Width="15" Margin="350 0 0 0" Foreground="White" Name="LoadingSpinner"/>
-                <MenuItem Header="_Refresh" Template="{StaticResource VsMenuTop}"  Click="Refresh_Click" Width="68" />
-                <Separator Template="{StaticResource VsMenuSep}" Margin="0" />
+                <MenuItem Header="_Refresh" Template="{StaticResource MenuTop}"  Click="Refresh_Click" Width="68" />
+                <Separator Template="{StaticResource MenuSep}" Margin="0" />
                 <ComboBox Width="120" x:Name="CbxCurrency" SelectionChanged="CbxCurrency_OnSelectionChanged">
                     <ComboBoxItem IsSelected="True">USD</ComboBoxItem>
                     <ComboBoxItem>EUR</ComboBoxItem>
                     <ComboBoxItem>BTC</ComboBoxItem>
                 </ComboBox>
             </Menu>
-
         </StackPanel>
-        <StackPanel>
+        <StackPanel Name="CoinPanel">
             <StackPanel Orientation = "Horizontal" HorizontalAlignment="Center">
                 <Button Content="&lt;&lt; Prevoius Page" Width="100" IsEnabled="False" Click="Prevoius_Click" x:Name="PreviousPage"/>
                 <Button Content="Next Page &gt;&gt;" Width="100" Margin="20,0,0,0" Click="Next_Click" x:Name="NextPage" />
-
-                <!--<Menu IsMainMenu="True">
-                    <MenuItem Header="_Previous Page" Template="{StaticResource VsMenuTop}" Margin="300 0 0 0" IsEnabled="False" Click="Prevoius_Click" x:Name="PreviousPage" />
-                    <MenuItem Header="_Next Page" Template="{StaticResource VsMenuTop}" Margin="0" Click="Next_Click" x:Name="NextPage" />
-                </Menu>-->
             </StackPanel>
             <Grid VerticalAlignment="Stretch">
-                <DataGrid x:Name="CryptoCurrencyGrid" Grid.ColumnSpan="2" Margin="0,0,-0.4,0.2" IsReadOnly="True"/>
+                <DataGrid x:Name="CryptoCurrencyGrid" Grid.ColumnSpan="2" Margin="0,0,-0.4,0.2" IsReadOnly="True" AutoGenerateColumns="False" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Symbol" Binding="{Binding Symbol}" />
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="MarketCap" Binding="{Binding MarketCap}" />
+                        <DataGridTextColumn Header="Price" Binding="{Binding Price}" />
+                        <DataGridTextColumn Header="TransactionTotalAmountLast24H" Binding="{Binding TransactionTotalAmountLast24H}" />
+                        <DataGridTextColumn Header="PercentageMoveLast24H" Binding="{Binding PercentageMoveLast24H}" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Foreground" Value="{Binding Path=., Converter={StaticResource CellConverter}}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="TokenAmount" Binding="{Binding TokenAmount}" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
+        </StackPanel>
+        <StackPanel Name="GlobalPanel" Visibility="Collapsed">
+            <Label ContentStringFormat="Market Count: {0}" Content="{Binding Path=GlobalTab.MarketCount}"/>
+            <Label ContentStringFormat="Crypto Currency Count: {0}" Content="{Binding Path=GlobalTab.CryptoCurrencyCount}"/>
+            <Label ContentStringFormat="Total Market Cap: {0}" Content="{Binding Path=GlobalTab.TotalMarketCap}" />
+            <Label ContentStringFormat="BTC percentage: {0}" Content="{Binding Path=GlobalTab.BtcPercentage}"/>
         </StackPanel>
 
     </StackPanel>

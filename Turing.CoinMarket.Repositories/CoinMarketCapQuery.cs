@@ -42,19 +42,24 @@ namespace Turing.CoinMarket.Repositories
 
                 var quote = tickerModelItem.quotes.FirstOrDefault(s => s.Key == currency);
 
-                mappedResult.Add(new CryptoCurrencyModel
-                {
-                    MarketCap = quote.Value.market_cap.GetValueOrDefault(0),
-                    Name = tickerModelItem.name,
-                    Symbol = tickerModelItem.symbol,
-                    Price = quote.Value.price.GetValueOrDefault(0),
-                    TokenAmount = tickerModelItem.total_supply.GetValueOrDefault(0),
-                    PercentageMoveLast24H = quote.Value.percent_change_24h.GetValueOrDefault(0),
-                    TransactionTotalAmountLast24H = quote.Value.voume_24h.GetValueOrDefault(0)
-                });
+                mappedResult.Add(MapCryptoCurrencyModel(quote, tickerModelItem));
             }
 
             return mappedResult;
+        }
+
+        private static CryptoCurrencyModel MapCryptoCurrencyModel(KeyValuePair<string, TickerQuote> quote, TickerModelItem tickerModelItem)
+        {
+            return new CryptoCurrencyModel
+            {
+                MarketCap = quote.Value.market_cap.GetValueOrDefault(0),
+                Name = tickerModelItem.name,
+                Symbol = tickerModelItem.symbol,
+                Price = quote.Value.price.GetValueOrDefault(0),
+                TokenAmount = tickerModelItem.total_supply.GetValueOrDefault(0),
+                PercentageMoveLast24H = quote.Value.percent_change_24h.GetValueOrDefault(0),
+                TransactionTotalAmountLast24H = quote.Value.volume_24h.GetValueOrDefault(0)
+            };
         }
 
         private TickerModel ParseResult(string result)
@@ -62,11 +67,6 @@ namespace Turing.CoinMarket.Repositories
             var parsedResult = JsonConvert.DeserializeObject<TickerModel>(result);
             return parsedResult;
         }
-    }
-
-    public interface IPagableRepository<in T> where T : PageableRequest
-    {
-        Task<List<CryptoCurrencyModel>> GetAll(T request);
     }
 
     public interface ICoinMarketCapRepository

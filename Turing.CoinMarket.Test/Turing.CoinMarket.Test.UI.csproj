@@ -58,7 +58,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\CellConverter.cs" />
+    <Compile Include="GlobalTab.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RequesetFactory.cs" />
+    <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

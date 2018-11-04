@@ -45,9 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiConnecter.cs" />
+    <Compile Include="CoinMarketModels\GlobalModel.cs" />
+    <Compile Include="GlobalRequest.cs" />
+    <Compile Include="GlobalQuery.cs" />
     <Compile Include="CoinMarketCapQuery.cs" />
     <Compile Include="CoinMarketModels\TickerModel.cs" />
     <Compile Include="CoinMarketRequest.cs" />
+    <Compile Include="IPagableRepository.cs" />
     <Compile Include="PageableRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

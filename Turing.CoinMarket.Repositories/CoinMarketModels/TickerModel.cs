@@ -22,7 +22,7 @@ namespace Turing.CoinMarket.Repositories.CoinMarketModels
     public class TickerQuote
     {
         public decimal? price { get; set; }
-        public decimal? voume_24h { get; set; }
+        public decimal? volume_24h { get; set; }
         public decimal? market_cap { get; set; }
         public decimal? percent_change_24h { get; set; }
     }

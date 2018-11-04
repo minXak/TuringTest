@@ -14,7 +14,14 @@ namespace Turing.CoinMarket.Test.UI
     public partial class MainWindow : Window
     {
         private readonly CoinMarketCapQuery _coinMarketCapQuery;
+        private readonly GlobalQuery _globalQuery;
         private readonly Pager _pager;
+
+        private GlobalTab GlobalTab
+        {
+            get => ((MainViewModel) this.DataContext).GlobalTab;
+            set => ((MainViewModel) this.DataContext).GlobalTab = value;
+        }
 
         public MainWindow()
         {
@@ -22,18 +29,38 @@ namespace Turing.CoinMarket.Test.UI
 
             _pager = new Pager();
             this._coinMarketCapQuery = new CoinMarketCapQuery();
+            this._globalQuery = new GlobalQuery();
 
+            this.DataContext = new MainViewModel();
             InitializeComponent();            
         }
 
         private async void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            await LoadPage();
+            await RefreshAll();
+        }
+
+        private async Task LoadGlobal()
+        {
+            try
+            {
+                var request = RequesetFactory.NewGlobal(GetCurrency());
+                var result = await _globalQuery.Get(request);
+                GlobalTab.BtcPercentage = result.BtcAmountPercentage;
+                GlobalTab.CryptoCurrencyCount = result.CryptoCurrenciesCount;
+                GlobalTab.MarketCount = result.MarketCount;
+                GlobalTab.TotalMarketCap = result.TotalMarketCap;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            await LoadPage();
+            await RefreshAll();
             InitTimer();
         }
 
@@ -67,7 +94,7 @@ namespace Turing.CoinMarket.Test.UI
             LoadingSpinner.Spin = true;
             try
             {
-                var request = RequesetFactory.New(_pager, (CbxCurrency.SelectedItem as ComboBoxItem).Content.ToString());
+                var request = RequesetFactory.New(_pager, GetCurrency());
                 this.CryptoCurrencyGrid.ItemsSource = await _coinMarketCapQuery.GetAll(request);
             }
             catch (Exception e)
@@ -80,6 +107,11 @@ namespace Turing.CoinMarket.Test.UI
                 LoadingSpinner.Icon = FontAwesomeIcon.Check;
                 LoadingSpinner.Spin = false;
             }                                    
+        }
+
+        private string GetCurrency()
+        {
+            return (CbxCurrency.SelectedItem as ComboBoxItem).Content.ToString();
         }
 
         private void DisablePreviousIfNeeded()
@@ -100,7 +132,7 @@ namespace Turing.CoinMarket.Test.UI
 
         private async void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            await LoadPage();
+            await RefreshAll();
         }
 
         private async void CbxCurrency_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -109,7 +141,30 @@ namespace Turing.CoinMarket.Test.UI
             {
                 return;
             }
+
+            await RefreshAll();
+        }
+
+        private async Task RefreshAll()
+        {
             await LoadPage();
+            await LoadGlobal();
+        }
+
+        private void Global_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalPanel.Visibility = Visibility.Visible;
+            CoinPanel.Visibility = Visibility.Collapsed;     
+            GlobalMenuItem.Template = this.Resources["MenuTopSelected"] as ControlTemplate;
+            CoinMarketMenuItem.Template = this.Resources["MenuTop"] as ControlTemplate;
+        }
+
+        private void CoinMarket_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalPanel.Visibility = Visibility.Collapsed;
+            CoinPanel.Visibility = Visibility.Visible;
+            GlobalMenuItem.Template = this.Resources["MenuTop"] as ControlTemplate;
+            CoinMarketMenuItem.Template = this.Resources["MenuTopSelected"] as ControlTemplate;
         }
     }
 }
