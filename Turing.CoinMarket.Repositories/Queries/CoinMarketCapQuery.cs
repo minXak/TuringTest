@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Turing.CoinMarket.DataModels;
 using Turing.CoinMarket.Repositories.CoinMarketModels;
+using Turing.CoinMarket.Repositories.Requests;
 
-namespace Turing.CoinMarket.Repositories
+namespace Turing.CoinMarket.Repositories.Queries
 {
-    public class CoinMarketCapQuery : ICoinMarketCapRepository, IPagableRepository<CoinMarketRequest>
+    public class CoinMarketCapQuery : ICoinMarketCapRepository
     {
         public async Task<List<CryptoCurrencyModel>> GetAll()
         {

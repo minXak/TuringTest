@@ -6,22 +6,24 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using Turing.CoinMarket.DataModels;
+using Turing.CoinMarket.Test.UI.Models;
 
 namespace Turing.CoinMarket.Test.UI.Controllers
 {
     public class MainWindowController
     {
         private readonly MainWindow _window;
-        private readonly DataGridController _dataGridController;
+        private readonly ThresholdWatcherController _tresholdWatcherController;
 
         public List<CryptoCurrencyModel> LocalItems { get; set; }
 
         public event EventHandler ThresholdCheckerEvent;
 
-        public MainWindowController(MainWindow window, DataGridController dataGridController)
+        public MainWindowController(MainWindow window, 
+            ThresholdWatcherController tresholdWatcherController)
         {
             _window = window;
-            _dataGridController = dataGridController;
+            _tresholdWatcherController = tresholdWatcherController;
             this.ThresholdCheckerEvent += ThresholdChecker;
         }
 
@@ -51,13 +53,13 @@ namespace Turing.CoinMarket.Test.UI.Controllers
 
         private async void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            await _dataGridController.RefreshAll();
+            await _window.RefreshAll();
         }
 
         private void ThresholdChecker(object sender, EventArgs e)
         {
             var reachedThresholdList = new List<TrackCryptoModel>();
-            foreach (var trackCryptoModel in _window._cryptoTracker)
+            foreach (var trackCryptoModel in _tresholdWatcherController.CryptoTracker)
             {
                 var currency = this.LocalItems.FirstOrDefault(s => s.Symbol == trackCryptoModel.Value.Symbol);
                 if (currency != null)

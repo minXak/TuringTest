@@ -1,6 +1,8 @@
 ﻿using Turing.CoinMarket.Repositories;
+using Turing.CoinMarket.Repositories.Requests;
+using Turing.CoinMarket.Test.UI.Models;
 
-namespace Turing.CoinMarket.Test.UI
+namespace Turing.CoinMarket.Test.UI.Factories
 {
     public class RequesetFactory
     {

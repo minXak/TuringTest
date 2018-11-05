@@ -1,4 +1,4 @@
-﻿namespace Turing.CoinMarket.Repositories
+﻿namespace Turing.CoinMarket.Repositories.Requests
 {
     public class PageableRequest
     {

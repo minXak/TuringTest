@@ -58,20 +58,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controllers\DataGridController.cs" />
+    <Compile Include="Controllers\GlobalController.cs" />
     <Compile Include="Controllers\MainWindowController.cs" />
+    <Compile Include="Controllers\ThresholdWatcherController.cs" />
     <Compile Include="Converters\CellConverter.cs" />
-    <Compile Include="EnumBooleanConverter.cs" />
-    <Compile Include="GlobalTab.cs" />
-    <Compile Include="PopupViewModel.cs" />
+    <Compile Include="Converters\EnumBooleanConverter.cs" />
+    <Compile Include="Models\GlobalTab.cs" />
+    <Compile Include="Models\PopupViewModel.cs" />
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="RequesetFactory.cs" />
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="TrackCryptoModel.cs" />
-    <Compile Include="TrackingDirection.cs" />
+    <Compile Include="Factories\RequesetFactory.cs" />
+    <Compile Include="Models\MainViewModel.cs" />
+    <Compile Include="Models\TrackCryptoModel.cs" />
+    <Compile Include="Models\TrackingDirection.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -90,7 +91,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Pager.cs" />
+    <Compile Include="Models\Pager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

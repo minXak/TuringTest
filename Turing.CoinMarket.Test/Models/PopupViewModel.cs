@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Turing.CoinMarket.Test.UI.Annotations;
+using Turing.CoinMarket.Test.UI.Properties;
 
-namespace Turing.CoinMarket.Test.UI
+namespace Turing.CoinMarket.Test.UI.Models
 {
     public class PopupViewModel : INotifyPropertyChanged
     {

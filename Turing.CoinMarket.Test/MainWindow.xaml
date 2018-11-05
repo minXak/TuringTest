@@ -7,8 +7,9 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:converters="clr-namespace:Turing.CoinMarket.Test.UI.Converters"
         xmlns:ui="clr-namespace:Turing.CoinMarket.Test.UI"
+        xmlns:models="clr-namespace:Turing.CoinMarket.Test.UI.Models"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" d:DataContext="{d:DesignInstance Type=ui:MainViewModel, IsDesignTimeCreatable=True}">
+        Title="MainWindow" Height="450" Width="800" d:DataContext="{d:DesignInstance Type=models:MainViewModel, IsDesignTimeCreatable=True}">
 
     <Window.Resources>
         <ControlTemplate x:Key="MenuTop" TargetType="MenuItem">

@@ -5,15 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Turing.CoinMarket.Test.UI"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:models="clr-namespace:Turing.CoinMarket.Test.UI.Models"
+        xmlns:converters="clr-namespace:Turing.CoinMarket.Test.UI.Converters"
         mc:Ignorable="d"
         Title="Add New Tracker" Height="250" Width="400" Visibility="Visible" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Name="TrackerPopupWindow"
-        d:DataContext="{d:DesignInstance Type=local:PopupViewModel, IsDesignTimeCreatable=True}">
+        d:DataContext="{d:DesignInstance Type=models:PopupViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
-        <local:EnumBooleanConverter x:Key="EnumBooleanConverter" />
+        <converters:EnumBooleanConverter x:Key="EnumBooleanConverter" />
         <ObjectDataProvider x:Key="directionEnumValues"
                             MethodName="GetValues" ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="local:DirectionEnum"/>
+                <x:Type TypeName="models:DirectionEnum"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>

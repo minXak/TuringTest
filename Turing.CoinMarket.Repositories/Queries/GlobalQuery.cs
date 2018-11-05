@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Turing.CoinMarket.DataModels;
 using Turing.CoinMarket.Repositories.CoinMarketModels;
+using Turing.CoinMarket.Repositories.Requests;
 
-namespace Turing.CoinMarket.Repositories
+namespace Turing.CoinMarket.Repositories.Queries
 {
     public class GlobalQuery : IGlobalQuery
     {

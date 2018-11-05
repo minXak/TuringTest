@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Turing.CoinMarket.Test.UI.Models;
 
 namespace Turing.CoinMarket.Test.UI
 {

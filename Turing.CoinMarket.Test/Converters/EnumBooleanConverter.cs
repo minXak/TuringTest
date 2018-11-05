@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Turing.CoinMarket.Test.UI
+namespace Turing.CoinMarket.Test.UI.Converters
 {
     public class EnumBooleanConverter : IValueConverter
     {

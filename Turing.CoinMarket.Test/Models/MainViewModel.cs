@@ -1,4 +1,4 @@
-﻿namespace Turing.CoinMarket.Test.UI
+﻿namespace Turing.CoinMarket.Test.UI.Models
 {
     public class MainViewModel
     {

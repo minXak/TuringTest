@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
 using Turing.CoinMarket.Repositories;
+using Turing.CoinMarket.Repositories.Queries;
+using Turing.CoinMarket.Repositories.Requests;
 
 namespace Turing.CoinMarket.Query.Tests
 {

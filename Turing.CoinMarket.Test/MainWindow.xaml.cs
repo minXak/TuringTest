@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Threading;
 using FontAwesome.WPF;
-using Turing.CoinMarket.DataModels;
-using Turing.CoinMarket.Repositories;
+using Turing.CoinMarket.Repositories.Queries;
 using Turing.CoinMarket.Test.UI.Controllers;
+using Turing.CoinMarket.Test.UI.Factories;
+using Turing.CoinMarket.Test.UI.Models;
 
 namespace Turing.CoinMarket.Test.UI
 {
@@ -20,13 +16,12 @@ namespace Turing.CoinMarket.Test.UI
     public partial class MainWindow : Window
     {
         private CoinMarketCapQuery _coinMarketCapQuery;
-        private GlobalQuery _globalQuery;
         private Pager _pager;
-        private readonly MainWindowController _controller;
-        private readonly Dictionary<string, TrackCryptoModel> _cryptoTracker = new Dictionary<string, TrackCryptoModel>();
-        private readonly DataGridController _dataGridController;        
+        private MainWindowController _controller;
+        private GlobalController _globalController;
+        private ThresholdWatcherController _tresholdWatcherController;
 
-        private GlobalTab GlobalTab
+        public GlobalTab GlobalTab
         {
             get => ((MainViewModel)this.DataContext).GlobalTab;
             set => ((MainViewModel)this.DataContext).GlobalTab = value;
@@ -37,15 +32,12 @@ namespace Turing.CoinMarket.Test.UI
             InitDependencies();
             InitializeComponent();
             InitEvents();
-
-            _dataGridController = new DataGridController(this);
-            _controller = new MainWindowController(this, _dataGridController);
         }
-        
+
         private void InitEvents()
         {
             this.Loaded += Window_Loaded;            
-            this.CryptoCurrencyGrid.MouseDoubleClick += CryptoCurrencyGridOnMouseDoubleClick;
+            this.CryptoCurrencyGrid.MouseDoubleClick += _tresholdWatcherController.CryptoCurrencyGridOnMouseDoubleClick;
 
             this.CoinMarketMenuItem.Click += _controller.CoinMarket_Click;
             this.GlobalMenuItem.Click += _controller.Global_Click;
@@ -55,75 +47,11 @@ namespace Turing.CoinMarket.Test.UI
         {
             this._pager = new Pager();
             this._coinMarketCapQuery = new CoinMarketCapQuery();
-            this._globalQuery = new GlobalQuery();
             this.DataContext = new MainViewModel();
-        }
 
-        private void CryptoCurrencyGridOnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            var item = (this.CryptoCurrencyGrid.SelectedItem as CryptoCurrencyModel);
-            var popup = new PopupWindow();
-
-            LoadPopupWindow(item, popup.GetTypedContext());
-             
-            var result = popup.ShowDialog();
-
-            ProcessDialogResult(result, popup);
-        }
-
-        private void ProcessDialogResult(bool? result, PopupWindow popup)
-        {
-            if (result.GetValueOrDefault(false))
-            {
-                var popupData = popup.GetTypedContext();
-                this._cryptoTracker.Add(popup.PopupSymbol.Text, new TrackCryptoModel
-                {
-                    Symbol = popupData.Symbol,
-                    Threshold = popupData.Threshold,
-                    IsUpper = popupData.IsUpper
-                });
-            }
-        }
-
-        private void LoadPopupWindow(CryptoCurrencyModel item, PopupViewModel popupDataContext)
-        {
-            if (_cryptoTracker.ContainsKey(item.Symbol))
-            {
-                var tracker = _cryptoTracker[item.Symbol];
-                popupDataContext.Direction = tracker.IsUpper ? DirectionEnum.Up : DirectionEnum.Down;
-                popupDataContext.Symbol = tracker.Symbol;
-                popupDataContext.Threshold = tracker.Threshold;
-            }
-            else
-            {
-                popupDataContext.Direction = DirectionEnum.Up;
-                popupDataContext.Symbol = item.Symbol;
-                popupDataContext.Threshold = item.Price;
-            }
-        }
-
-        private async Task LoadGlobal()
-        {
-            try
-            {
-                var request = RequesetFactory.NewGlobal(GetCurrency());
-                var result = await _globalQuery.Get(request);
-
-                SetGlobalView(result);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        private void SetGlobalView(CryptoGlobalModel result)
-        {
-            GlobalTab.BtcPercentage = result.BtcAmountPercentage;
-            GlobalTab.CryptoCurrencyCount = result.CryptoCurrenciesCount;
-            GlobalTab.MarketCount = result.MarketCount;
-            GlobalTab.TotalMarketCap = result.TotalMarketCap;
+            this._globalController = new GlobalController(this);
+            this._tresholdWatcherController = new ThresholdWatcherController(this);
+            this._controller = new MainWindowController(this, _tresholdWatcherController);
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -170,17 +98,9 @@ namespace Turing.CoinMarket.Test.UI
             }
         }
 
-        private string GetCurrency()
+        public string GetCurrency()
         {
             return (CbxCurrency.SelectedItem as ComboBoxItem).Content.ToString();
-        }
-
-        private void DisablePreviousIfNeeded()
-        {
-            if (_pager.CurrentPage == 1)
-            {
-                PreviousPage.IsEnabled = false;
-            }
         }
 
         private async void Prevoius_Click(object sender, RoutedEventArgs e)
@@ -189,6 +109,14 @@ namespace Turing.CoinMarket.Test.UI
             DisablePreviousIfNeeded();
 
             await LoadPage();
+        }
+
+        private void DisablePreviousIfNeeded()
+        {
+            if (_pager.CurrentPage == 1)
+            {
+                PreviousPage.IsEnabled = false;
+            }
         }
 
         private async void Refresh_Click(object sender, RoutedEventArgs e)
@@ -206,10 +134,10 @@ namespace Turing.CoinMarket.Test.UI
             await RefreshAll();
         }
 
-        private async Task RefreshAll()
+        public async Task RefreshAll()
         {
             await LoadPage();
-            await LoadGlobal();
+            await _globalController.LoadGlobal();
         }       
     }
 }
