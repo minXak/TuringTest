@@ -1,4 +1,4 @@
-# TuringTest
+# How to
 
 * To set tracking of the Crypto Currency - double click on the row.
 * Refresh is set to 10 seconds.
