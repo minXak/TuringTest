@@ -1,0 +1,43 @@
+﻿<Window x:Class="Turing.CoinMarket.Test.UI.PopupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Turing.CoinMarket.Test.UI"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Add New Tracker" Height="250" Width="400" Visibility="Visible" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Name="TrackerPopupWindow"
+        d:DataContext="{d:DesignInstance Type=local:PopupViewModel, IsDesignTimeCreatable=True}">
+    <Window.Resources>
+        <local:EnumBooleanConverter x:Key="EnumBooleanConverter" />
+        <ObjectDataProvider x:Key="directionEnumValues"
+                            MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:DirectionEnum"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <StackPanel HorizontalAlignment="Left"  VerticalAlignment="Top" Width="390">
+        <StackPanel  Height="180"  >
+            <StackPanel Height="50" Orientation="Horizontal">
+                <Label Content="Symbol" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Right"/>
+                <TextBox Height="23" VerticalContentAlignment="Center" TextWrapping="Wrap" Name="PopupSymbol" Text="{Binding Path=Symbol, Mode=TwoWay, PresentationTraceSources.TraceLevel=High}" Width="100" IsEnabled="True"/>
+            </StackPanel>
+            <StackPanel Height="50" Orientation="Horizontal">
+                <Label Content="Threshold" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Right"/>
+                <TextBox Height="23" VerticalContentAlignment="Center" TextWrapping="Wrap" Text="{Binding  Path=Threshold, Mode=TwoWay}"  Name="PopupThreshold" Width="100" PreviewTextInput="NumberValidationTextBox" />
+            </StackPanel>
+            <StackPanel Height="50" Orientation="Horizontal">
+                <Label Content="Direction" VerticalContentAlignment="Center" Width="100" HorizontalAlignment="Right"/>
+                <ComboBox Width="120" VerticalContentAlignment="Center" Height="25" 
+                          ItemsSource="{Binding Source={StaticResource directionEnumValues}, Mode=OneTime}"
+                          SelectedItem="{Binding Path=Direction, Mode=TwoWay}"/>
+            </StackPanel>
+
+        </StackPanel>
+        <StackPanel  Height="30"   Orientation="Horizontal" HorizontalAlignment="Center" >
+            <Button Content="Cancel" Width="100" Click="CancelButton_OnClick"/>
+            <Button Content="Ok"  Width="100" Click="OkButton_OnClick"  Margin="5 0 0 0"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
